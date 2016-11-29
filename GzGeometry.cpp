@@ -101,7 +101,6 @@ IntersectResult Sphere::intersect(const GzRay &ray) const
     if (distance > 0.0f)
     {
         GzVector3 interPos(ray.getPoint(distance));
-        //GzVector3 normal = (interPos - this->center).normalize();
         GzVector3 relative(interPos - center);
         GzVector3 n(relative.normalize());
         float theta = std::acos(n.dotMultiply((this->arctic - this->center).normalize()));
@@ -113,6 +112,17 @@ IntersectResult Sphere::intersect(const GzRay &ray) const
             float sinPhiL = n.dotMultiply(this->long_y - this->center);
             float phi = std::atan2(sinPhiL, cosPhiL);
             u = static_cast<float>(phi / (2*PI) + 0.5);
+        }
+
+        GzTexture tex_norm = material.normal;
+        if (tex_norm.hasTexture())
+        {
+            GzColor map = tex_norm.tex_map(u, v);
+            GzVector3 norm_map = 2 * GzVector3(map.r, map.g, map.b) - GzVector3(1, 1, 1);
+            GzVector3 N = (interPos - center).normalize();
+            GzVector3 T = (GzVector3(N.z, N.z, -1 * N.x - N.y) * u).normalize();
+            GzVector3 B = (N.crossMultiply(T) * v).normalize();
+            n = (norm_map.x * T + norm_map.y * B + norm_map.z * N).normalize();
         }
 
         return IntersectResult(this, distance, interPos, n, u, v);

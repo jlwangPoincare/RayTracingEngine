@@ -159,13 +159,12 @@ int ApplicationEngine::Render()
         //p_geos[0] = new Sphere(GzVector3(0.0f, 5.0f, 0.0f), 5.0f, GzMaterial(GzColor::RED, 16.0f, 1.1f, 0.05f, 0.95f));
         //p_geos[1] = new Plane(GzVector3(0.0f, 1.0f, 0.0f), 0.0f, GzVector3(0.0f, 0.0f, 1.0f), mat);
 		//p_geos[2] = new Rec(GzVector3(-10.0f,1.0f,-10.0f), GzVector3(0,0,15), GzVector3(15, 0, 0), GzMaterial(GzColor::RED, 0));  // base, x dir , y dir
-        const char* file = "tex_normal.ppm";
+        const char* file = "tex_normal_golf.ppm";
         GzMaterial mat(GzTexture(&GzTexture::checker_ptex_func, 1), 0.2f);
         GzMaterial mat2(GzTexture(&GzTexture::checker_ptex_func, 5), 0.2f);
-        //GzMaterial mat_norm(GzColor(0.5f, 0.5f, 0.5f), GzTexture(file, &GzTexture::image_tex_func, 0), 16.0f, 0.8f);
+        GzMaterial mat_norm(GzColor::CYAN, GzTexture(file, &GzTexture::image_tex_func, 0), 16.0f, 1.12f, 0.5f, 0.0f);
         GzGeometry ** p_geos = new GzGeometry*[3];
-        p_geos[0] = new Sphere(GzVector3(5.2f, 5.0f, 0.0f), 5.0f, mat2);
-        //p_geos[0] = new Sphere(GzVector3(5.2f, 5.0f, 0.0f), 5.0f, GzMaterial(GzColor(0.5f, 0.5f, 0.5f), 16.0f, 0.8f));
+        p_geos[0] = new Sphere(GzVector3(5.2f, 5.0f, 0.0f), 5.0f, mat_norm);
         p_geos[1] = new Sphere(GzVector3(-5.2f, 5.0f, 0.0f), 5.0f, GzMaterial(GzColor(0.5f, 0.5f, 0.5f), 16.0f, 1.12f, 0.5f, 0.5f));
         p_geos[2] = new Plane(GzVector3(0.0f, 1.0f, 0.0f), 0.0f, GzVector3(0.0f, 0.0f, 1.0f), mat);
         GzGeometry * p_unionGeometry = new Union(3, p_geos);
